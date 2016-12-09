@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>SDF P2016 Validateur de places</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Muli|Oswald:700" rel="stylesheet">
+
+    <style>
+      html, body {
+        background-color: #35415b;
+        color: #fff;
+        font-family: 'Muli', sans-serif;
+        text-align: center;
+      }
+
+      h1 {
+        color: #ffe500;
+        font-family: 'Oswald', sans-serif;
+        font-size: 42px;
+        font-weight: bold;
+      }
+
+      #place {
+        font-size: 24px;
+        padding: 10px;
+      }
+
+      #okay {
+        color: #ffe500;
+        font-family: 'Oswald', sans-serif;
+        font-size: 36px;
+        font-weight: bold;
+        height: 40px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Validateur de places UA 2016</h1>
+    <h3>Scanner le code-barres ou entrer le pseudo utilisateur.</h3>
+    <p>En cas de soucis, appeler +33760632340 et demandez &laquo; Gabiél La Fierté du Village &raquo;</p>
+    <input type="text" id="place" autofocus>
+    <div id="okay">En attente</div>
+
+    <script>
+      let places = [
+          { "name":"Doe", "id": 53 },
+          { "name":"Bate", "id": 67 },
+          { "name":"Bob", "id": 690 },
+          { "name":"OK", "id": 17 }
+      ];
+    </script>
+
+    <script>
+      let place         = document.getElementById('place');
+      let username      = document.getElementById('username');
+      let studentNumber = document.getElementById('studentNumber');
+      let okay          = document.getElementById('okay');
+      let multiple      = document.getElementById('multiple');
+
+      place.focus();
+      place.onkeypress = function (e) {
+        if (e.keyCode === 13 || e.charCode === 13 || e.which === 13) {
+          if (isNaN(place.value)) {
+            checkLastname(place.value);
+          } else {
+            checkId(parseInt(place.value, 10));
+          }
+
+          place.value = '';
+          place.focus();
+        }
+      };
+
+      function checkLastname(name) {
+        const found = places
+          .map(place => place.name.toLowerCase() === name.toLowerCase())
+          .reduce((a, b) => a || b, false);
+
+        if (!found) {
+          hasNotFound();
+        } else {
+          hasFound();
+        }
+      }
+
+      function checkId(id) {
+        const found = places
+          .map(place => place.id === id)
+          .reduce((a, b) => a || b, false);
+
+        if (!found) {
+          hasNotFound();
+        } else {
+          hasFound();
+        }
+      }
+
+      function hasNotFound() {
+        okay.style.color = '#ff1c16';
+        okay.innerHTML   = 'PLACE NON TROUVÉE !';
+      }
+
+      function hasFound() {
+        okay.style.color = '#3bf13b';
+        okay.innerHTML   = 'PLACE TROUVÉE !';
+      }
+    </script>
+  </body>
+</html>
